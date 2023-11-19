@@ -9,38 +9,53 @@ import UIKit
 import OpenAI
 import OpenAIKit
 
+
 class ViewController: UIViewController {
     
+    @IBOutlet weak var chatTextView: UITextView!
+    @IBOutlet weak var chatButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        var client: OpenAI = OpenAI(apiToken: "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")
-        let query = CompletionsQuery(model: .textDavinci_003, prompt: "What is 42?", temperature: 0, maxTokens: 100, topP: 1, frequencyPenalty: 0, presencePenalty: 0, stop: ["\\n"])
-        
-        do {
-            client.completions(query: query) { result in
-                //Handle result here
-                result.map { comp in
-                    print("\(comp.choices[0].text)")
-                }
+        // Call the async function
+    }
+    
+    @IBAction func chatAction(_ sender: Any) {
+        print("Task")
+//        {
+            // Configure the OpenAI API with your API key
+            var openAI = OpenAI(apiToken: "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")
+            
+            // Create a prompt
+            let query = CompletionsQuery(model: .gpt4_1106_preview, prompt: "Why is the sky blue?", temperature: 0, maxTokens: 100, topP: 1, frequencyPenalty: 0, presencePenalty: 0, stop: ["\\n"])
+            
+            do {
+                // Define the completion parameters
+                let result = try openAI.completions(query: query)
+                
+                // Send the request to OpenAI's API
+                openAI.completions(query: query, completion: { completion in
+                    switch completion {
+                    case .success(let response):
+                        // Print the response from GPT
+                        if let text = response.choices.first?.text {
+                            print("Response: \(text)")
+                        } else {
+                            print("No text received in response.")
+                        }
+                    case .failure(let error):
+                        // Handle any errors
+                        DispatchQueue.main.async {
+                            self.chatTextView.text = "Error: \(error.localizedDescription)"
+                        }
+                    }
+                })
+            } catch {
                 
             }
-        } catch {
-            print("Error")
-        }
+//        }()
         
-            //or
-     // try async client.completions(query: query)
-            
-            //        client.completions(query: <#T##CompletionsQuery#>, completion: <#T##(Result<CompletionsResult, Error>) -> Void#>)
-            
-            //        openai.ChatCompletion.create(
-            //                # model="gpt-4-1106-preview",
-            //                model="gpt-4",
-            //                messages=[{"role": "user", "content": prompt}]
-            //                )
-        }
-        
-        
+        //        Task {
+        //            await chat
+        //        }
+    }
 }
-

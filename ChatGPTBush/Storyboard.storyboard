@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController id="Y6W-OH-hqX" sceneMemberID="viewController">
+                    <view key="view" opaque="NO" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nJ6-Gc-U4I">
+                                <rect key="frame" x="0.0" y="59" width="393" height="379.66666666666669"/>
+                                <color key="backgroundColor" systemColor="systemFillColor"/>
+                                <connections>
+                                    <segue destination="wO7-HE-WCX" kind="embed" id="b23-7H-Fx5"/>
+                                </connections>
+                            </containerView>
+                            <button opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="cJg-4j-zMD">
+                                <rect key="frame" x="301" y="447" width="53" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="tinted" image="questionmark.bubble" catalog="system"/>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" systemColor="systemFillColor"/>
+                        <constraints>
+                            <constraint firstItem="nJ6-Gc-U4I" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="3Id-Bt-wvn"/>
+                            <constraint firstItem="nJ6-Gc-U4I" firstAttribute="height" secondItem="vDu-zF-Fre" secondAttribute="height" multiplier="0.5" id="6KS-sk-7lR"/>
+                            <constraint firstItem="nJ6-Gc-U4I" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="8iv-Nf-BJD"/>
+                            <constraint firstItem="nJ6-Gc-U4I" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="AEo-vc-mQl"/>
+                            <constraint firstItem="nJ6-Gc-U4I" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="h5y-IA-MA5"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="66" y="1"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="5Lz-2z-5Rd">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9rn-Gp-GCF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <viewController id="wO7-HE-WCX" sceneMemberID="viewController">
+                    <view key="view" opaque="NO" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" id="8Fj-5u-dOI">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="379.66666666666669"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" textAlignment="natural" id="BF0-1h-CDm">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="380"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" systemColor="systemFillColor"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="8Re-BA-MI4"/>
+                        <color key="backgroundColor" systemColor="systemFillColor"/>
+                    </view>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="847" y="1"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="questionmark.bubble" catalog="system" width="128" height="110"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemFillColor">
+            <color red="0.47058823529411764" green="0.47058823529411764" blue="0.50196078431372548" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

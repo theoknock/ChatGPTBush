@@ -38,7 +38,7 @@ class ViewController: UIViewController, UITextViewDelegate {
     }
     
     
-    var openAI: OpenAI = OpenAI(configuration: OpenAI.Configuration(token: "", organizationIdentifier: "org-jGOqXYFRJHKlnkff8K836fK2", timeoutInterval: 60.0))
+    var openAI: OpenAI = OpenAI(configuration: OpenAI.Configuration(token: "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", organizationIdentifier: "org-jGOqXYFRJHKlnkff8K836fK2", timeoutInterval: 60.0))
     
     lazy var gradient: CAGradientLayer  = {
         let gradient = CAGradientLayer()

@@ -23,14 +23,14 @@ class ViewController: UIViewController {
         print("Task")
 //        {
             // Configure the OpenAI API with your API key
-            var openAI = OpenAI(apiToken: "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")
-            
+            var openAI = OpenAI(apiToken: "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")
+
             // Create a prompt
             let query = CompletionsQuery(model: .gpt4_1106_preview, prompt: "Why is the sky blue?", temperature: 0, maxTokens: 100, topP: 1, frequencyPenalty: 0, presencePenalty: 0, stop: ["\\n"])
             
             do {
                 // Define the completion parameters
-                let result = try openAI.completions(query: query)
+//                let result = try openAI.completions(query: ÷r)
                 
                 // Send the request to OpenAI's API
                 openAI.completions(query: query, completion: { completion in

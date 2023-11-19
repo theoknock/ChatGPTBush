@@ -13,13 +13,15 @@
 		B9E25A982B0A3ECA00CDA5E7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B9E25A962B0A3ECA00CDA5E7 /* Main.storyboard */; };
 		B9E25A9A2B0A3ECB00CDA5E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9E25A992B0A3ECB00CDA5E7 /* Assets.xcassets */; };
 		B9E25A9D2B0A3ECB00CDA5E7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B9E25A9B2B0A3ECB00CDA5E7 /* LaunchScreen.storyboard */; };
+		B9E25AA62B0A3F7500CDA5E7 /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = B9E25AA52B0A3F7500CDA5E7 /* OpenAI */; };
+		B9E25AA92B0A3FAC00CDA5E7 /* OpenAIKit in Frameworks */ = {isa = PBXBuildFile; productRef = B9E25AA82B0A3FAC00CDA5E7 /* OpenAIKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B9E25A8D2B0A3ECA00CDA5E7 /* ChatGPTBush.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatGPTBush.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9E25A902B0A3ECA00CDA5E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B9E25A922B0A3ECA00CDA5E7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		B9E25A942B0A3ECA00CDA5E7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B9E25A942B0A3ECA00CDA5E7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		B9E25A972B0A3ECA00CDA5E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B9E25A992B0A3ECB00CDA5E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B9E25A9C2B0A3ECB00CDA5E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -31,6 +33,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9E25AA62B0A3F7500CDA5E7 /* OpenAI in Frameworks */,
+				B9E25AA92B0A3FAC00CDA5E7 /* OpenAIKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +87,10 @@
 			dependencies = (
 			);
 			name = ChatGPTBush;
+			packageProductDependencies = (
+				B9E25AA52B0A3F7500CDA5E7 /* OpenAI */,
+				B9E25AA82B0A3FAC00CDA5E7 /* OpenAIKit */,
+			);
 			productName = ChatGPTBush;
 			productReference = B9E25A8D2B0A3ECA00CDA5E7 /* ChatGPTBush.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +119,10 @@
 				Base,
 			);
 			mainGroup = B9E25A842B0A3ECA00CDA5E7;
+			packageReferences = (
+				B9E25AA42B0A3F7500CDA5E7 /* XCRemoteSwiftPackageReference "OpenAI" */,
+				B9E25AA72B0A3FAC00CDA5E7 /* XCRemoteSwiftPackageReference "openai-kit" */,
+			);
 			productRefGroup = B9E25A8E2B0A3ECA00CDA5E7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -363,6 +375,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B9E25AA42B0A3F7500CDA5E7 /* XCRemoteSwiftPackageReference "OpenAI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MacPaw/OpenAI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.5;
+			};
+		};
+		B9E25AA72B0A3FAC00CDA5E7 /* XCRemoteSwiftPackageReference "openai-kit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dylanshine/openai-kit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.8.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B9E25AA52B0A3F7500CDA5E7 /* OpenAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B9E25AA42B0A3F7500CDA5E7 /* XCRemoteSwiftPackageReference "OpenAI" */;
+			productName = OpenAI;
+		};
+		B9E25AA82B0A3FAC00CDA5E7 /* OpenAIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B9E25AA72B0A3FAC00CDA5E7 /* XCRemoteSwiftPackageReference "openai-kit" */;
+			productName = OpenAIKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B9E25A852B0A3ECA00CDA5E7 /* Project object */;
 }

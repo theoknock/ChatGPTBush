@@ -7,6 +7,7 @@
 
 import UIKit
 import OpenAI
+import OpenAIKit
 
 
 class ViewController: UIViewController, UITextViewDelegate {
@@ -14,22 +15,11 @@ class ViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var chatTextView: UITextView!
     @IBOutlet weak var chatButton: UIButton!
     
-    //    let logger: (UITextView) -> (String) -> Void = { textView in
-    //        return { entry in
-    //            DispatchQueue.main.async {
-    //                let composition = NSMutableAttributedString(attributedString: textView.attributedText)
-    //                let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.lightText]
-    //                composition.append(NSAttributedString(string: entry, attributes: attributes))
-    //                textView.attributedText = composition
-    //            }
-    //        }
-    //    }
-    //
     var logger: (UITextView) -> (String) -> Void = { textView in
         return { entry in
             DispatchQueue.main.async {
                 var composition = NSMutableAttributedString(attributedString: textView.attributedText)
-                composition = composition.stringByStrippingExtraSpacesAndBlankLines() as! NSMutableAttributedString
+                //                composition = composition.stringByStrippingExtraSpacesAndBlankLines() as! NSMutableAttributedString
                 let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.lightGray]
                 composition.append(NSAttributedString(string: entry, attributes: attributes))
                 textView.attributedText = composition
@@ -37,8 +27,42 @@ class ViewController: UIViewController, UITextViewDelegate {
         }
     }
     
+    // "OPENAI_API_KEY_SWIFT"
+    // "OPENAI_ORGANIZATION"
     
-    var openAI: OpenAI = OpenAI(configuration: OpenAI.Configuration(token: "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", organizationIdentifier: "org-jGOqXYFRJHKlnkff8K836fK2", timeoutInterval: 60.0))
+//    func environment_variable_value(environment_variable: String) -> () {
+//        let environment_variable_value: Dictionary<String, String> = Dictionary<String, String>(ProcessInfo.processInfo.environment[environment_variable]!)
+//    }
+    
+    func env_var_value(key: String) -> () {
+        var key_vals: Dictionary<String, String> = ProcessInfo.processInfo.environment
+        for key_val in key_vals {
+            print(key_val)
+        }
+    }
+    
+    func openai_configuration(token: String, organization: String) -> (OpenAI.Configuration) -> (Void) -> (OpenAI) {
+        let configuration: OpenAI.Configuration = OpenAI.Configuration.init(token: api_key)
+        var storedValue: OpenAI = OpenAI.init(configuration: OpenAI.Configuration)
+        
+        func makePersistentProperty() -> (Int32) -> Int32 {
+            var storedValue: Int32 = Int32.zero
+            
+            return { newValue in
+                storedValue = newValue
+                return storedValue
+            }
+        }
+        
+        return { newValue in
+            storedValue = newValue
+            return storedValue
+        }
+    }
+    
+    var configuration: OpenAI.Configuration
+    
+    var openAI: OpenAI
     
     lazy var gradient: CAGradientLayer  = {
         let gradient = CAGradientLayer()
@@ -83,9 +107,26 @@ class ViewController: UIViewController, UITextViewDelegate {
             return symbolColor.applying(symbolPointSizeWeight)
         }
     }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        var asdf: (OpenAI.Configuration) -> (OpenAI) -> OpenAI = { configuration in
+            return { conf in
+                return OpenAI.init(configuration: conf) .init(configuration: conf)
+            }
+        }
+        
+        
+        var openA I: (String, String) -> (OpenAI.Configuration) -> (OpenAI) = { api_key, organization in
+            var configuration: OpenAI.Configuration = OpenAI.Configuration(token: api_key?, organizationIdentifier: organization?, timeoutInterval: 60.0)
+            return { configuration in
+                var openAI: OpenAI = OpenAI(configuration: configuration)
+                return openAI
+            }
+        }
         
         gradient.frame = self.view.bounds
         self.view.layer.addSublayer(gradient)
@@ -110,6 +151,7 @@ class ViewController: UIViewController, UITextViewDelegate {
         DispatchQueue.main.async {
             sender.isSelected = true
         }
+        
         let query = CompletionsQuery(model: .textDavinci_003, prompt: "Why is the sky blue?", temperature: 0, maxTokens: 100, topP: 1, frequencyPenalty: 0, presencePenalty: 0, stop: ["\\n"])
         
         do {

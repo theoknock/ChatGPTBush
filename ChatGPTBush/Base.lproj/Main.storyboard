@@ -13,33 +13,29 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ChatGPTBush" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" id="8bC-Xf-vdC">
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" indicatorStyle="black" bouncesZoom="NO" editable="NO" usesAttributedText="YES" allowsEditingTextAttributes="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bQE-Fc-aTP" userLabel="Chat Text View">
-                                <rect key="frame" x="16" y="213" width="361" height="426"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="tintColor" systemColor="lightTextColor"/>
-                                <attributedString key="attributedText">
-                                    <fragment content="Why is the sky blue?">
-                                        <attributes>
-                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" size="14" name="SFProRounded-Medium"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="0.5" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="TopLeft" ambiguous="YES" preservesSuperviewLayoutMargins="YES" contentInsetAdjustmentBehavior="always" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="maJ-WT-vwI">
+                                <rect key="frame" x="16" y="229.66666666666663" width="361" height="393"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" secondItem="maJ-WT-vwI" secondAttribute="width" multiplier="1:1" id="XNA-QC-ohG"/>
+                                </constraints>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ChatGPT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="thb-mM-VZQ" userLabel="ChatGPT">
-                                <rect key="frame" x="16" y="192" width="69" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" preservesSuperviewLayoutMargins="YES" text="ChatGPT 2d88b6c" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="thb-mM-VZQ" userLabel="Chat Label">
+                                <rect key="frame" x="16" y="192" width="143.66666666666666" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" systemColor="lightTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zf3-M8-zEj">
-                                <rect key="frame" x="324" y="647" width="53" height="33.333333333333371"/>
+                            <button contentMode="scaleToFill" ambiguous="YES" preservesSuperviewLayoutMargins="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zf3-M8-zEj">
+                                <rect key="frame" x="268.66666666666669" y="622.66666666666652" width="108.33333333333331" height="33.333333333333371"/>
                                 <color key="backgroundColor" systemColor="tertiarySystemFillColor"/>
                                 <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
@@ -62,22 +58,22 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="byG-Ez-0sm"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" systemColor="lightTextColor"/>
                         <constraints>
-                            <constraint firstItem="bQE-Fc-aTP" firstAttribute="width" relation="lessThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="width" id="5p3-Iw-aT6"/>
-                            <constraint firstItem="bQE-Fc-aTP" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="D7B-5h-q8m"/>
-                            <constraint firstItem="bQE-Fc-aTP" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="IEI-Kk-2nN"/>
-                            <constraint firstItem="thb-mM-VZQ" firstAttribute="bottom" secondItem="bQE-Fc-aTP" secondAttribute="top" id="PBn-gh-4TJ"/>
-                            <constraint firstItem="bQE-Fc-aTP" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="Yka-Q8-FpL"/>
-                            <constraint firstItem="zf3-M8-zEj" firstAttribute="top" secondItem="bQE-Fc-aTP" secondAttribute="bottom" constant="8" symbolic="YES" id="czn-Fd-fzO"/>
-                            <constraint firstItem="thb-mM-VZQ" firstAttribute="leading" secondItem="bQE-Fc-aTP" secondAttribute="leading" id="lXu-8H-Peg"/>
-                            <constraint firstItem="bQE-Fc-aTP" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.5" id="oBE-xp-b2v"/>
-                            <constraint firstItem="zf3-M8-zEj" firstAttribute="trailing" secondItem="bQE-Fc-aTP" secondAttribute="trailing" id="xWe-TW-K00"/>
-                            <constraint firstItem="bQE-Fc-aTP" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="xhR-Jz-qfv"/>
+                            <constraint firstItem="maJ-WT-vwI" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="30s-Tb-wBD"/>
+                            <constraint firstItem="zf3-M8-zEj" firstAttribute="width" secondItem="maJ-WT-vwI" secondAttribute="width" multiplier="0.3" id="BaE-gm-hh5"/>
+                            <constraint firstItem="maJ-WT-vwI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerXWithinMargins" id="JpR-uE-Vn8"/>
+                            <constraint firstItem="zf3-M8-zEj" firstAttribute="topMargin" secondItem="maJ-WT-vwI" secondAttribute="bottomMargin" constant="15.999999999999886" id="R32-g7-Nus"/>
+                            <constraint firstItem="maJ-WT-vwI" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="U5J-Ph-fJy"/>
+                            <constraint firstItem="zf3-M8-zEj" firstAttribute="trailing" secondItem="maJ-WT-vwI" secondAttribute="trailing" id="dNW-BV-Dx6"/>
+                            <constraint firstItem="thb-mM-VZQ" firstAttribute="bottom" secondItem="maJ-WT-vwI" secondAttribute="top" id="kzW-87-zYw"/>
+                            <constraint firstItem="thb-mM-VZQ" firstAttribute="leading" secondItem="maJ-WT-vwI" secondAttribute="leading" id="ngc-QC-djO"/>
+                            <constraint firstItem="maJ-WT-vwI" firstAttribute="width" relation="lessThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="width" id="vDk-IP-uLA"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="chatButton" destination="zf3-M8-zEj" id="qFY-wf-gDc"/>
-                        <outlet property="chatTextView" destination="bQE-Fc-aTP" id="1n2-Qe-yW0"/>
+                        <outlet property="chatTextView" destination="maJ-WT-vwI" id="dVH-Gz-OsH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -87,8 +83,14 @@
     </scenes>
     <resources>
         <image name="text.bubble" catalog="system" width="128" height="110"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="lightTextColor">
             <color white="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="tertiaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29803921568627451" colorSpace="custom" customColorSpace="sRGB"/>

@@ -31,30 +31,45 @@ class ViewController: UIViewController {
         case response
     }
     
-    var logger: (UITextView) -> (String, Role) -> Void = { textView in
-        return { entry, role in
+    let prompt_attr = [NSAttributedString.Key.font :
+                        UIFont.monospacedSystemFont(ofSize: 15.0, weight: UIFont.Weight.regular),
+                       NSAttributedString.Key.foregroundColor :
+                        UIColor.lightGray]
+    
+    let response_attr = [NSAttributedString.Key.font :
+                            UIFont.monospacedSystemFont(ofSize: 17.0, weight: UIFont.Weight.bold),
+                         NSAttributedString.Key.foregroundColor :
+                            UIColor.white]
+    
+    var logger: (UITextView) -> (String, String, Role) -> Void = { textView in
+        return { prompt, response, role in
             DispatchQueue.main.async {
-                var attributedString = NSMutableAttributedString(string: entry, attributes:
-                                                                    [NSAttributedString.Key.font :
-                                                                        UIFont.monospacedSystemFont(ofSize: 15.0, weight: UIFont.Weight.regular),
-                                                                     NSAttributedString.Key.foregroundColor :
-                                                                        UIColor.lightGray])
-                
+                var prompt_string = NSMutableAttributedString(string: "\(prompt)\n", attributes: [NSAttributedString.Key.font :
+                                                                                                    UIFont.monospacedSystemFont(ofSize: 17.0, weight: UIFont.Weight.bold),
+                                                                                                   NSAttributedString.Key.foregroundColor :
+                                                                                                    UIColor.white])
+                var response_string = NSMutableAttributedString(string: "\(response)\n\n", attributes: [NSAttributedString.Key.font :
+                                                                                                    UIFont.monospacedSystemFont(ofSize: 15.0, weight: UIFont.Weight.regular),
+                                                                                                 NSAttributedString.Key.foregroundColor :
+                                                                                                    UIColor.lightGray])
+                                                                                                 
                 var composition = NSMutableAttributedString(attributedString: textView.attributedText)
-                composition.append(attributedString)
+                composition.append(prompt_string)
+                composition.append(response_string)
                 
                 DispatchQueue.main.async {
                     textView.attributedText = composition
                 }
             }
+            
         }
     }
     
-    func getEnvironmentVar(name: String, text_view_logger: ((String, Role) -> Void)?) -> String? {
+    func getEnvironmentVar(name: String, text_view_logger: ((String, String, Role) -> Void)?) -> String? {
         let rawValue = getenv(name)
         guard rawValue != nil else { return nil }
         let env_var_value = String(cString: rawValue!, encoding: .utf8) ?? "\n---\nValue for key: \(name) not found\n---\n"
-        (text_view_logger ?? logger(self.logTextField))(env_var_value, Role.response)
+        (text_view_logger ?? logger(self.logTextField))(name, env_var_value, Role.response)
         
         return String(cString: rawValue!, encoding: .utf8)
     }
@@ -69,10 +84,12 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let textViewLogger = logger(self.logTextField)
-        getEnvironmentVar(name: "OS_ACTIVITY_TOOLS_OVERSIZE", text_view_logger: textViewLogger)
-        print("\n---\n")
+        self.logTextField.layer.borderColor = UIColor.lightGray.cgColor
+        self.logTextField.layer.borderWidth = 0.333
         
+        let textViewLogger = logger(self.logTextField)
+//        getEnvironmentVar(name: "OS_ACTIVITY_TOOLS_OVERSIZE", text_view_logger: textViewLogger)
+       
         func models() {
             let urlString = "https://api.openai.com/v1/models"
             if let url = URL(string: urlString) {
@@ -83,17 +100,17 @@ class ViewController: UIViewController {
                 
                 let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                     if let error = error {
-                        textViewLogger("Error: \(error)", Role.response)
+                        textViewLogger("Error: \(request)\n", "\(error)", Role.response)
                         return
                     }
                     
                     if let response = response as? HTTPURLResponse {
-                        textViewLogger("Response: \(response)", Role.response)
+                        textViewLogger("Response:  \(request)\n", "\(response)", Role.response)
                     }
                     
                     if let data = data {
                         if let dataString = String(data: data, encoding: .utf8) {
-                            textViewLogger("Data: \(dataString)", Role.response)
+                            textViewLogger("Data:  \(request)\n", "\(dataString)", Role.response)
                         }
                     }
                 }
@@ -104,14 +121,7 @@ class ViewController: UIViewController {
         
         //        models()
         
-        
-        struct ChatGPTResponse: Codable {
-            var message: String
-        }
-        
-        var encoded_data: Data?
-        
-        func completions() {
+        func completions(prompt: String) -> Int {
             let url = URL(string: "https://api.openai.com/v1/chat/completions")!
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
@@ -124,7 +134,7 @@ class ViewController: UIViewController {
             let payload: [String: Any] = [
                 "model": "gpt-3.5-turbo",
                 "messages": [
-                    ["role": "user", "content": "Why is the sky blue?"]
+                    ["role": "user", "content": prompt]
                 ],
                 "temperature": 1,
                 "max_tokens": 256,
@@ -132,6 +142,14 @@ class ViewController: UIViewController {
                 "frequency_penalty": 0,
                 "presence_penalty": 0
             ]
+//            
+//            if let messages = payload["messages"] as? [[String: String]],
+//               let firstMessage = messages.first,
+//               let content = firstMessage["content"] {
+//            textViewLogger("\(payload)", "\(prompt)\n\n", Role.prompt)
+//            } else {
+//                print("Content not found")
+//            }
             
             let jsonData = try! JSONSerialization.data(withJSONObject: payload, options: [])
             
@@ -155,7 +173,7 @@ class ViewController: UIViewController {
                             do {
                                 let chatResponse = try JSONDecoder().decode(ChatResponse.self, from: jsonData)
                                 if let firstChoice = chatResponse.choices.first {
-                                    textViewLogger(firstChoice.message.content, Role.response)
+                                    textViewLogger("\(prompt)\n", "\(firstChoice.message.content)\n\n", Role.response)
                                 }
                             } catch {
                                 
@@ -167,10 +185,13 @@ class ViewController: UIViewController {
             }
             
             task.resume()
+            
+            return 1;
         }
         
-        completions()
-        
+        if completions(prompt: "Why is the sky blue?") == 1 {
+            completions(prompt: "Why is the moon yellow?")
+        }
         
     }
     

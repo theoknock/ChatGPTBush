@@ -26,40 +26,38 @@ class ViewController: UIViewController, UITextViewDelegate {
     
     @IBOutlet weak var logTextField: UITextView!
     @IBOutlet weak var taskStatusImageView: UIImageView!
-    
     @IBOutlet weak var promptTextView: UITextView!
     
-
+    
     enum Role {
         case prompt
         case response
     }
     
     let prompt_attr = [NSAttributedString.Key.font :
-                        UIFont.monospacedSystemFont(ofSize: 17.0, weight: UIFont.Weight.black),
+                        UIFont.monospacedSystemFont(ofSize: 17.0, weight: UIFont.Weight.heavy),
                        NSAttributedString.Key.foregroundColor :
                         UIColor.white]
     
     let response_attr = [NSAttributedString.Key.font :
-                            UIFont.monospacedSystemFont(ofSize: 17.0, weight: UIFont.Weight.regular),
+                            UIFont.monospacedSystemFont(ofSize: 17.0, weight: UIFont.Weight.light),
                          NSAttributedString.Key.foregroundColor :
                             UIColor.lightGray]
     
-    var logger: (UITextView) -> (String, String, Role) -> Void = { textView in
-        return { prompt, response, role in
+    var logger: (UITextView) -> (String, Role) -> Void = { textView in
+        return { content, role in
             DispatchQueue.main.async {
-                var prompt_string = NSMutableAttributedString(string: "\n\(prompt)", attributes: [NSAttributedString.Key.font :
+                var prompt_string = NSMutableAttributedString(string: "\(content)\n", attributes: [NSAttributedString.Key.font :
                                                                                                     UIFont.monospacedSystemFont(ofSize: 17.0, weight: UIFont.Weight.bold),
                                                                                                   NSAttributedString.Key.foregroundColor :
                                                                                                     UIColor.lightGray])
-                var response_string = NSMutableAttributedString(string: "\(response)\n\n", attributes: [NSAttributedString.Key.font :
+                var response_string = NSMutableAttributedString(string: "\(content)\n\n", attributes: [NSAttributedString.Key.font :
                                                                                                             UIFont.monospacedSystemFont(ofSize: 17.0, weight: UIFont.Weight.regular),
                                                                                                         NSAttributedString.Key.foregroundColor :
                                                                                                             UIColor.lightGray])
                 
                 var composition = NSMutableAttributedString(attributedString: textView.attributedText)
-                composition.append(prompt_string)
-                composition.append(response_string)
+                composition.append((role == .prompt) ? prompt_string : response_string)
                 
                 DispatchQueue.main.async {
                     textView.attributedText = composition
@@ -69,11 +67,11 @@ class ViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    func getEnvironmentVar(name: String, text_view_logger: ((String, String, Role) -> Void)?) -> String? {
+    func getEnvironmentVar(name: String, text_view_logger: ((String, Role) -> Void)?) -> String? {
         let rawValue = getenv(name)
         guard rawValue != nil else { return nil }
         let env_var_value = String(cString: rawValue!, encoding: .utf8) ?? "\n---\nValue for key: \(name) not found\n---\n"
-        (text_view_logger ?? logger(self.logTextField))(name, env_var_value, Role.response)
+        (text_view_logger ?? logger(self.logTextField))("\(name)\t\(env_var_value)", Role.response)
         
         return String(cString: rawValue!, encoding: .utf8)
     }
@@ -84,14 +82,14 @@ class ViewController: UIViewController, UITextViewDelegate {
             print(key_val)
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.logTextField.layer.borderColor = UIColor.lightGray.cgColor
         self.logTextField.layer.borderWidth = 1.0
         
-        self.promptTextView.layer.borderColor = UIColor.white.cgColor
+        self.promptTextView.layer.borderColor = UIColor.lightGray.cgColor
         self.promptTextView.layer.borderWidth = 1.0
         
         self.promptTextView.delegate = self
@@ -109,17 +107,17 @@ class ViewController: UIViewController, UITextViewDelegate {
                 
                 let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                     if let error = error {
-                        textViewLogger("Error: \(request)\n", "\(error)", Role.response)
+                        textViewLogger("Error: \(error)", Role.response)
                         return
                     }
                     
                     if let response = response as? HTTPURLResponse {
-                        textViewLogger("Response:  \(request)\n", "\(response)", Role.response)
+                        textViewLogger("Response: \(response)", Role.response)
                     }
                     
                     if let data = data {
                         if let dataString = String(data: data, encoding: .utf8) {
-                            textViewLogger("Data:  \(request)\n", "\(dataString)", Role.response)
+                            textViewLogger("Data: \(dataString)", Role.response)
                         }
                     }
                 }
@@ -132,7 +130,7 @@ class ViewController: UIViewController, UITextViewDelegate {
         
         
         
-    
+        
         
     }
     
@@ -188,7 +186,7 @@ class ViewController: UIViewController, UITextViewDelegate {
                         do {
                             let chatResponse = try JSONDecoder().decode(ChatResponse.self, from: jsonData)
                             if let firstChoice = chatResponse.choices.first {
-                                self.logger(self.logTextField)("", "\(firstChoice.message.content)", Role.response)
+                                self.logger(self.logTextField)("\(firstChoice.message.content)", Role.response)
                             }
                         } catch {
                             
@@ -235,22 +233,22 @@ class ViewController: UIViewController, UITextViewDelegate {
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-            if text == "\n" {
-                print("textFieldShouldReturn")
-                if completions(prompt: self.promptTextView.text!) == 1 {
-                    self.logger(self.logTextField)("\(self.promptTextView.text!)", "", Role.prompt)
-                }
-                // Perform your action here
-                // For instance, dismiss the keyboard if you need to
-                textView.resignFirstResponder()
-
-                // Return false to not add a new line character to the text view
-                return false
+        if text == "\n" {
+            print("textFieldShouldReturn")
+            if completions(prompt: self.promptTextView.text!) == 1 {
+                self.logger(self.logTextField)("\(self.promptTextView.text!)", Role.prompt)
             }
+            // Perform your action here
+            // For instance, dismiss the keyboard if you need to
+            textView.resignFirstResponder()
             
-            // Return true for other characters to be processed normally
-            return true
+            // Return false to not add a new line character to the text view
+            return false
         }
+        
+        // Return true for other characters to be processed normally
+        return true
+    }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         self.promptTextView.text = ""
@@ -260,13 +258,13 @@ class ViewController: UIViewController, UITextViewDelegate {
         self.promptTextView.text = ""
     }
     
-//    func textViewDidEndEditing(_ textView: UITextView) {
-//        print("textFieldShouldReturn")
-//        if completions(prompt: self.promptTextView.text!) == 1 {
-//            self.logger(self.logTextField)("\(self.promptTextView.text!)", "", Role.prompt)
-//        }
-//            // You might want to dismiss the keyboard
-//        textView.resignFirstResponder()
-//        }
+    //    func textViewDidEndEditing(_ textView: UITextView) {
+    //        print("textFieldShouldReturn")
+    //        if completions(prompt: self.promptTextView.text!) == 1 {
+    //            self.logger(self.logTextField)("\(self.promptTextView.text!)", "", Role.prompt)
+    //        }
+    //            // You might want to dismiss the keyboard
+    //        textView.resignFirstResponder()
+    //        }
 }
 

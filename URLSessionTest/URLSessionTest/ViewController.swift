@@ -8,6 +8,20 @@
 import UIKit
 import Foundation
 
+struct ChatResponse: Codable {
+    let choices: [Choice]
+}
+
+struct Choice: Codable {
+    let message: Message
+}
+
+struct Message: Codable {
+    let role: String
+    let content: String
+}
+
+
 class ViewController: UIViewController {
     
     @IBOutlet weak var logTextField: UITextView!
@@ -90,6 +104,13 @@ class ViewController: UIViewController {
         
         //        models()
         
+        
+        struct ChatGPTResponse: Codable {
+            var message: String
+        }
+        
+        var encoded_data: Data?
+        
         func completions() {
             let url = URL(string: "https://api.openai.com/v1/chat/completions")!
             var request = URLRequest(url: url)
@@ -98,10 +119,12 @@ class ViewController: UIViewController {
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("Bearer ", forHTTPHeaderField: "Authorization")
             
+            request.addValue("org-jGOqXYFRJHKlnkff8K836fK2", forHTTPHeaderField: "OpenAI-Organization")
+            
             let payload: [String: Any] = [
                 "model": "gpt-3.5-turbo",
                 "messages": [
-                    ["role": "user", "content": ""]
+                    ["role": "user", "content": "Why is the sky blue?"]
                 ],
                 "temperature": 1,
                 "max_tokens": 256,
@@ -116,19 +139,29 @@ class ViewController: UIViewController {
             
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
                 if let error = error {
-                    textViewLogger("Error: \(error)", Role.response)
+                    //                    textViewLogger("Error: \(error)", Role.response)
                     return
                 }
                 
                 // Print response and data if available
                 if let response = response as? HTTPURLResponse {
-                    textViewLogger("Response: \(response)", Role.response)
+                    //                    textViewLogger("Response: \(response)", Role.response)
                 }
                 
                 if let data = data {
                     // Convert data to a String and print it
                     if let dataString = String(data: data, encoding: .utf8) {
-                        textViewLogger("Data: \(dataString)", Role.response)
+                        if let jsonData = dataString.data(using: .utf8) {
+                            do {
+                                let chatResponse = try JSONDecoder().decode(ChatResponse.self, from: jsonData)
+                                if let firstChoice = chatResponse.choices.first {
+                                    textViewLogger(firstChoice.message.content, Role.response)
+                                }
+                            } catch {
+                                
+                            }
+                        }
+                        //                        textViewLogger("Data: \(dataString)", Role.response)
                     }
                 }
             }
@@ -137,6 +170,8 @@ class ViewController: UIViewController {
         }
         
         completions()
+        
+        
     }
     
     

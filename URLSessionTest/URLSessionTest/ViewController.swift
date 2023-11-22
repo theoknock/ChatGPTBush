@@ -22,11 +22,12 @@ struct Message: Codable {
 }
 
 
-class ViewController: UIViewController, UITextFieldDelegate {
+class ViewController: UIViewController, UITextViewDelegate {
     
     @IBOutlet weak var logTextField: UITextView!
     @IBOutlet weak var taskStatusImageView: UIImageView!
-    @IBOutlet weak var promptTextField: UITextField!
+    
+    @IBOutlet weak var promptTextView: UITextView!
     
 
     enum Role {
@@ -35,24 +36,24 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     let prompt_attr = [NSAttributedString.Key.font :
-                        UIFont.monospacedSystemFont(ofSize: 15.0, weight: UIFont.Weight.regular),
+                        UIFont.monospacedSystemFont(ofSize: 17.0, weight: UIFont.Weight.black),
                        NSAttributedString.Key.foregroundColor :
-                        UIColor.lightGray]
+                        UIColor.white]
     
     let response_attr = [NSAttributedString.Key.font :
-                            UIFont.monospacedSystemFont(ofSize: 17.0, weight: UIFont.Weight.bold),
+                            UIFont.monospacedSystemFont(ofSize: 17.0, weight: UIFont.Weight.regular),
                          NSAttributedString.Key.foregroundColor :
-                            UIColor.white]
+                            UIColor.lightGray]
     
     var logger: (UITextView) -> (String, String, Role) -> Void = { textView in
         return { prompt, response, role in
             DispatchQueue.main.async {
-                var prompt_string = NSMutableAttributedString(string: "\(prompt)\n", attributes: [NSAttributedString.Key.font :
+                var prompt_string = NSMutableAttributedString(string: "\n\(prompt)", attributes: [NSAttributedString.Key.font :
                                                                                                     UIFont.monospacedSystemFont(ofSize: 17.0, weight: UIFont.Weight.bold),
                                                                                                   NSAttributedString.Key.foregroundColor :
-                                                                                                    UIColor.white])
+                                                                                                    UIColor.lightGray])
                 var response_string = NSMutableAttributedString(string: "\(response)\n\n", attributes: [NSAttributedString.Key.font :
-                                                                                                            UIFont.monospacedSystemFont(ofSize: 15.0, weight: UIFont.Weight.regular),
+                                                                                                            UIFont.monospacedSystemFont(ofSize: 17.0, weight: UIFont.Weight.regular),
                                                                                                         NSAttributedString.Key.foregroundColor :
                                                                                                             UIColor.lightGray])
                 
@@ -90,7 +91,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.logTextField.layer.borderColor = UIColor.lightGray.cgColor
         self.logTextField.layer.borderWidth = 1.0
         
-        self.promptTextField.delegate = self
+        self.promptTextView.layer.borderColor = UIColor.white.cgColor
+        self.promptTextView.layer.borderWidth = 1.0
+        
+        self.promptTextView.delegate = self
         
         let textViewLogger = logger(self.logTextField)
         //        getEnvironmentVar(name: "OS_ACTIVITY_TOOLS_OVERSIZE", text_view_logger: textViewLogger)
@@ -184,7 +188,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                         do {
                             let chatResponse = try JSONDecoder().decode(ChatResponse.self, from: jsonData)
                             if let firstChoice = chatResponse.choices.first {
-                                self.logger(self.logTextField)("\(prompt)\n", "\(firstChoice.message.content)\n\n", Role.response)
+                                self.logger(self.logTextField)("", "\(firstChoice.message.content)", Role.response)
                             }
                         } catch {
                             
@@ -230,21 +234,39 @@ class ViewController: UIViewController, UITextFieldDelegate {
         return 1;
     }
     
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-     print("textFieldShouldBeginEditing")
-       return true
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print("textFieldShouldReturn")
-        if completions(prompt: self.promptTextField.text!) == 1 {
-            self.logger(self.logTextField)("\(self.promptTextField.text!)", "", Role.prompt)
-        }
-            // You might want to dismiss the keyboard
-            textField.resignFirstResponder()
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+            if text == "\n" {
+                print("textFieldShouldReturn")
+                if completions(prompt: self.promptTextView.text!) == 1 {
+                    self.logger(self.logTextField)("\(self.promptTextView.text!)", "", Role.prompt)
+                }
+                // Perform your action here
+                // For instance, dismiss the keyboard if you need to
+                textView.resignFirstResponder()
 
-            // Return true to indicate you've handled this event
+                // Return false to not add a new line character to the text view
+                return false
+            }
+            
+            // Return true for other characters to be processed normally
             return true
         }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        self.promptTextView.text = ""
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        self.promptTextView.text = ""
+    }
+    
+//    func textViewDidEndEditing(_ textView: UITextView) {
+//        print("textFieldShouldReturn")
+//        if completions(prompt: self.promptTextView.text!) == 1 {
+//            self.logger(self.logTextField)("\(self.promptTextView.text!)", "", Role.prompt)
+//        }
+//            // You might want to dismiss the keyboard
+//        textView.resignFirstResponder()
+//        }
 }
 

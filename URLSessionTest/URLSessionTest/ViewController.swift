@@ -22,10 +22,13 @@ struct Message: Codable {
 }
 
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var logTextField: UITextView!
+    @IBOutlet weak var taskStatusImageView: UIImageView!
+    @IBOutlet weak var promptTextField: UITextField!
     
+
     enum Role {
         case prompt
         case response
@@ -46,13 +49,13 @@ class ViewController: UIViewController {
             DispatchQueue.main.async {
                 var prompt_string = NSMutableAttributedString(string: "\(prompt)\n", attributes: [NSAttributedString.Key.font :
                                                                                                     UIFont.monospacedSystemFont(ofSize: 17.0, weight: UIFont.Weight.bold),
-                                                                                                   NSAttributedString.Key.foregroundColor :
+                                                                                                  NSAttributedString.Key.foregroundColor :
                                                                                                     UIColor.white])
                 var response_string = NSMutableAttributedString(string: "\(response)\n\n", attributes: [NSAttributedString.Key.font :
-                                                                                                    UIFont.monospacedSystemFont(ofSize: 15.0, weight: UIFont.Weight.regular),
-                                                                                                 NSAttributedString.Key.foregroundColor :
-                                                                                                    UIColor.lightGray])
-                                                                                                 
+                                                                                                            UIFont.monospacedSystemFont(ofSize: 15.0, weight: UIFont.Weight.regular),
+                                                                                                        NSAttributedString.Key.foregroundColor :
+                                                                                                            UIColor.lightGray])
+                
                 var composition = NSMutableAttributedString(attributedString: textView.attributedText)
                 composition.append(prompt_string)
                 composition.append(response_string)
@@ -80,16 +83,18 @@ class ViewController: UIViewController {
             print(key_val)
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.logTextField.layer.borderColor = UIColor.lightGray.cgColor
-        self.logTextField.layer.borderWidth = 0.333
+        self.logTextField.layer.borderWidth = 1.0
+        
+        self.promptTextField.delegate = self
         
         let textViewLogger = logger(self.logTextField)
-//        getEnvironmentVar(name: "OS_ACTIVITY_TOOLS_OVERSIZE", text_view_logger: textViewLogger)
-       
+        //        getEnvironmentVar(name: "OS_ACTIVITY_TOOLS_OVERSIZE", text_view_logger: textViewLogger)
+        
         func models() {
             let urlString = "https://api.openai.com/v1/models"
             if let url = URL(string: urlString) {
@@ -119,82 +124,127 @@ class ViewController: UIViewController {
             }
         }
         
-        //        models()
+        //                models()
         
-        func completions(prompt: String) -> Int {
-            let url = URL(string: "https://api.openai.com/v1/chat/completions")!
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.addValue("Bearer ", forHTTPHeaderField: "Authorization")
-            
-            request.addValue("org-jGOqXYFRJHKlnkff8K836fK2", forHTTPHeaderField: "OpenAI-Organization")
-            
-            let payload: [String: Any] = [
-                "model": "gpt-3.5-turbo",
-                "messages": [
-                    ["role": "user", "content": prompt]
-                ],
-                "temperature": 1,
-                "max_tokens": 256,
-                "top_p": 1,
-                "frequency_penalty": 0,
-                "presence_penalty": 0
-            ]
-//            
-//            if let messages = payload["messages"] as? [[String: String]],
-//               let firstMessage = messages.first,
-//               let content = firstMessage["content"] {
-//            textViewLogger("\(payload)", "\(prompt)\n\n", Role.prompt)
-//            } else {
-//                print("Content not found")
-//            }
-            
-            let jsonData = try! JSONSerialization.data(withJSONObject: payload, options: [])
-            
-            request.httpBody = jsonData
-            
-            let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                if let error = error {
-                    //                    textViewLogger("Error: \(error)", Role.response)
-                    return
-                }
-                
-                // Print response and data if available
-                if let response = response as? HTTPURLResponse {
-                    //                    textViewLogger("Response: \(response)", Role.response)
-                }
-                
-                if let data = data {
-                    // Convert data to a String and print it
-                    if let dataString = String(data: data, encoding: .utf8) {
-                        if let jsonData = dataString.data(using: .utf8) {
-                            do {
-                                let chatResponse = try JSONDecoder().decode(ChatResponse.self, from: jsonData)
-                                if let firstChoice = chatResponse.choices.first {
-                                    textViewLogger("\(prompt)\n", "\(firstChoice.message.content)\n\n", Role.response)
-                                }
-                            } catch {
-                                
-                            }
-                        }
-                        //                        textViewLogger("Data: \(dataString)", Role.response)
-                    }
-                }
-            }
-            
-            task.resume()
-            
-            return 1;
-        }
         
-        if completions(prompt: "Why is the sky blue?") == 1 {
-            completions(prompt: "Why is the moon yellow?")
-        }
+        
+    
         
     }
     
+    func completions(prompt: String) -> Int {
+        let url = URL(string: "https://api.openai.com/v1/chat/completions")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer ", forHTTPHeaderField: "Authorization")
+        
+        request.addValue("org-jGOqXYFRJHKlnkff8K836fK2", forHTTPHeaderField: "OpenAI-Organization")
+        
+        let payload: [String: Any] = [
+            "model": "gpt-4",
+            "messages": [
+                ["role": "user", "content": prompt]
+            ],
+            "temperature": 1,
+            "max_tokens": 256,
+            "top_p": 1,
+            "frequency_penalty": 0,
+            "presence_penalty": 0
+        ]
+        //
+        //            if let messages = payload["messages"] as? [[String: String]],
+        //               let firstMessage = messages.first,
+        //               let content = firstMessage["content"] {
+        //            textViewLogger("\(payload)", "\(prompt)\n\n", Role.prompt)
+        //            } else {
+        //                print("Content not found")
+        //            }
+        
+        let jsonData = try! JSONSerialization.data(withJSONObject: payload, options: [])
+        
+        request.httpBody = jsonData
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                //                    textViewLogger("Error: \(error)", Role.response)
+                return
+            }
+            
+            // Print response and data if available
+            if let response = response as? HTTPURLResponse {
+                //                    textViewLogger("Response: \(response)", Role.response)
+            }
+            
+            if let data = data {
+                // Convert data to a String and print it
+                if let dataString = String(data: data, encoding: .utf8) {
+                    if let jsonData = dataString.data(using: .utf8) {
+                        do {
+                            let chatResponse = try JSONDecoder().decode(ChatResponse.self, from: jsonData)
+                            if let firstChoice = chatResponse.choices.first {
+                                self.logger(self.logTextField)("\(prompt)\n", "\(firstChoice.message.content)\n\n", Role.response)
+                            }
+                        } catch {
+                            
+                        }
+                    }
+                    //                        textViewLogger("Data: \(dataString)", Role.response)
+                }
+            }
+        }
+        
+        task.resume()
+        
+        // Create a repeating timer
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            switch task.state {
+            case .running:
+                self.taskStatusImageView.tintColor = .systemGreen
+                self.taskStatusImageView.isHidden = !self.taskStatusImageView.isHidden
+                print("Task is still running...")
+            case .completed:
+                self.taskStatusImageView.isHidden = false
+                self.taskStatusImageView.tintColor = .systemBlue
+                print("Task completed")
+                timer.invalidate()
+            case .canceling:
+                self.taskStatusImageView.tintColor = .systemYellow
+                self.taskStatusImageView.isHidden = !self.taskStatusImageView.isHidden
+                print("Task is canceling")
+                timer.invalidate()
+            case .suspended:
+                self.taskStatusImageView.isHidden = false
+                self.taskStatusImageView.tintColor = .systemRed
+                print("Task is suspended")
+                timer.invalidate()
+            @unknown default:
+                self.taskStatusImageView.isHidden = false
+                self.taskStatusImageView.tintColor = .systemRed
+                print("Unknown state")
+                timer.invalidate()
+            }
+        }
+        
+        return 1;
+    }
     
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+     print("textFieldShouldBeginEditing")
+       return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("textFieldShouldReturn")
+        if completions(prompt: self.promptTextField.text!) == 1 {
+            self.logger(self.logTextField)("\(self.promptTextField.text!)", "", Role.prompt)
+        }
+            // You might want to dismiss the keyboard
+            textField.resignFirstResponder()
+
+            // Return true to indicate you've handled this event
+            return true
+        }
 }
 

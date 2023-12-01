@@ -15,13 +15,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" text="OpenAI API HTTP Requests Demo f07b11c" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4Ae-38-nL7" userLabel="Version Label">
-                                <rect key="frame" x="15" y="388" width="361.33333333333326" height="74.666666666666686"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="top" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mUZ-aH-GFv">
                                 <rect key="frame" x="16" y="136.33333333333331" width="361" height="681.66666666666674"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -35,10 +28,19 @@
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" enablesReturnKeyAutomatically="YES"/>
                             </textView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play.circle" catalog="system" highlightedImage="stop.circle" translatesAutoresizingMaskIntoConstraints="NO" id="l5x-Zb-wKz">
-                                <rect key="frame" x="16" y="394" width="361" height="62.333333333333314"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" text="OpenAI API HTTP Requests Demo f07b11c" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4Ae-38-nL7" userLabel="Version Label">
+                                <rect key="frame" x="15" y="388" width="361.33333333333326" height="74.666666666666686"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play" catalog="system" highlightedImage="play.fill" translatesAutoresizingMaskIntoConstraints="NO" id="HWW-CD-HYg">
+                                <rect key="frame" x="343" y="86.666666666666671" width="34" height="30"/>
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="HWW-CD-HYg" secondAttribute="height" multiplier="1:1" id="Zpg-XP-z1o"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -50,21 +52,23 @@
                             <constraint firstItem="Zrd-iL-n9U" firstAttribute="leading" secondItem="mUZ-aH-GFv" secondAttribute="leading" id="GMa-ez-zIE"/>
                             <constraint firstItem="mUZ-aH-GFv" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottomMargin" id="JP5-NX-hxJ"/>
                             <constraint firstItem="Zrd-iL-n9U" firstAttribute="bottomMargin" secondItem="mUZ-aH-GFv" secondAttribute="top" id="JsD-A4-Mq9"/>
+                            <constraint firstItem="HWW-CD-HYg" firstAttribute="centerY" secondItem="Zrd-iL-n9U" secondAttribute="centerY" id="Mja-E2-7Vo"/>
                             <constraint firstItem="Zrd-iL-n9U" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="Z4N-rJ-JBf"/>
                             <constraint firstItem="mUZ-aH-GFv" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.8" id="dI8-ia-CvZ"/>
                             <constraint firstItem="mUZ-aH-GFv" firstAttribute="width" relation="lessThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="width" id="mMj-lB-DHH"/>
+                            <constraint firstItem="HWW-CD-HYg" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="ucc-uT-ZR8"/>
+                            <constraint firstItem="HWW-CD-HYg" firstAttribute="height" secondItem="Zrd-iL-n9U" secondAttribute="height" multiplier="0.4" id="vzP-ho-eIL"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="4Ae-38-nL7"/>
-                                <exclude reference="l5x-Zb-wKz"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="logTextField" destination="mUZ-aH-GFv" id="kp6-wK-lhr"/>
+                        <outlet property="logTextView" destination="mUZ-aH-GFv" id="kp6-wK-lhr"/>
                         <outlet property="promptTextView" destination="Zrd-iL-n9U" id="09p-iE-SD4"/>
-                        <outlet property="taskStatusImageView" destination="l5x-Zb-wKz" id="oPf-fm-uA9"/>
+                        <outlet property="taskStatusImageView" destination="HWW-CD-HYg" id="WTh-4R-yOo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -73,7 +77,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="play.circle" catalog="system" width="128" height="123"/>
-        <image name="stop.circle" catalog="system" width="128" height="123"/>
+        <image name="play" catalog="system" width="117" height="128"/>
+        <image name="play.fill" catalog="system" width="117" height="128"/>
     </resources>
 </document>

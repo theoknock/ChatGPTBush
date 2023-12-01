@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "curldsl",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/zonble/CurlDSL",
+      "state" : {
+        "revision" : "9a91a25dc3ca9496fe92680d2ea787adf5a50319",
+        "version" : "0.0.5"
+      }
+    }
+  ],
+  "version" : 2
+}

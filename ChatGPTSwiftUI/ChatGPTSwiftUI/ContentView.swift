@@ -26,15 +26,15 @@ struct Message: Identifiable, Equatable, Hashable {
 
 struct Completion: Identifiable, Equatable, Hashable {
     let id: String
-    var messages: [Message]
+    var messages: [Message] = [Message]()
 }
 
 
 struct ContentView: View {
     @State private var senderMessage: String = ""
     @State private var receiverMessage: String = ""
-    //    @State private var messages: [Message] = []
-    @State private var completions: [Completion] = []
+    @State private var isTaskRunning = false
+    @State private var completions: [Completion] = [Completion]()
     
     
     var body: some View {
@@ -43,59 +43,60 @@ struct ContentView: View {
                 VStack {
                     List {
                         ForEach(completions) { completion in
-                                Section {
-                                    ForEach(completion.messages) { message in
-                                        VStack {
-                                            Section {
-                                                Text(message.text)
-                                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                                    .cornerRadius(10, antialiased: true)
-                                                    .foregroundColor(Color.primary)
-                                            } header: {
-                                                Text((message.type == MessageType.prompt) ? "Prompt" : "Response")
-                                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                                    .cornerRadius(10, antialiased: true)
-                                                    .listRowSeparator(.hidden)
-                                                    .foregroundColor(Color.secondary)
-                                            }
-                                            .listSectionSeparator(.hidden)
-                                            .preferredColorScheme(.dark)
-                                            .padding(.horizontal)
-
-                                    }
-                                        .frame(width: geometry.size.width , alignment: .leading)
+                            Section {
+                                ForEach(completion.messages) { message in
+                                    VStack {
+                                        Section {
+                                            Text(message.text)
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                                .cornerRadius(10, antialiased: true)
+                                                .foregroundColor(Color.primary)
+                                        } header: {
+                                            Text((message.type == MessageType.prompt) ? "Prompt" : "Response")
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                                .cornerRadius(10, antialiased: true)
+                                                .listRowSeparator(.hidden)
+                                                .foregroundColor(Color.secondary)
+                                        }
+                                        .listSectionSeparator(.hidden)
+                                        .preferredColorScheme(.dark)
                                         .padding(.horizontal)
-                                }
-                                    .frame(width: geometry.size.width, alignment: .leading)
+                                        
+                                    }
+                                    .frame(width: geometry.size.width , alignment: .leading)
                                     .padding(.horizontal)
+                                }
+                                .frame(width: geometry.size.width, alignment: .leading)
+                                .padding(.horizontal)
+                            }
                         }
                     }
-                }
-                HStack {
-                    TextEditor(text: $senderMessage)
-                        .multilineTextAlignment(.leading)
-                        .border(Color.secondary, width: 3.0)
-                        .onKeyPress(.return, action: {
+                    HStack {
+                        TextEditor(text: $senderMessage)
+                            .multilineTextAlignment(.leading)
+                            .border(Color.secondary, width: 3.0)
+                            .onKeyPress(.return, action: {
+                                sendMessage(senderMessage)
+                                return .handled
+                            })
+                        Button(action: {
                             sendMessage(senderMessage)
-                            return .handled
-                        })
-                    Button(action: {
-                        sendMessage(senderMessage)
-                    }) {
-                        Image(systemName: "play")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .symbolRenderingMode(.monochrome)
-                            .fontWeight(.thin)
-                            .foregroundStyle(Color.secondary)
+                            self.isTaskRunning.toggle()
+                        }) {
+                            Image(systemName: self.isTaskRunning ? "play.fill" : "play")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .symbolRenderingMode(.monochrome)
+                                .fontWeight(.thin)
+                                .foregroundStyle(Color.secondary)
+                        }
+                        .border(Color.secondary, width: 3.0)
                     }
-                    .border(Color.secondary, width: 3.0)
+                    .frame(height: geometry.size.height * 0.0625, alignment: .leading)
                 }
-                .frame(height: geometry.size.height * 0.0625, alignment: .leading)
             }
-        }
             .preferredColorScheme(.dark)
-                       })
+        })
     }
     
     //        GeometryReader(content: { geometry in
@@ -160,18 +161,13 @@ struct ContentView: View {
     
     private func sendMessage(_ message: String) {
         let tidyMessage = message.trimmingCharacters(in: .whitespacesAndNewlines)
-        //        let data = message.data(using: .utf8)!
-    
-        //        chatMessages.append(Message(id: hash, text: message, type: MessageType.prompt))
-        
-        //        addMessage(completion: &newChat, text: tidyMessage, type: .prompt)
         
         let url = URL(string: "https://api.openai.com/v1/chat/completions")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("Bearer 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", forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer ", forHTTPHeaderField: "Authorization")
         
         request.addValue("org-jGOqXYFRJHKlnkff8K836fK2", forHTTPHeaderField: "OpenAI-Organization")
         
@@ -192,36 +188,59 @@ struct ContentView: View {
         request.httpBody = jsonData
         
         
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             DispatchQueue.main.async {
-                var chatMessages: [Message] = [Message]()
-                chatMessages.append(Message(id: sha256(), text: tidyMessage, type: MessageType.prompt))
-                
-                if let data = data {
+                var completion: Completion = Completion(id: sha256(), messages: [Message]())
+                completion.messages.append(Message(id: sha256(), text: tidyMessage, type: MessageType.prompt))
+                senderMessage = ""
+                if (data != nil) {
+//                    completion.messages.append(Message(id: sha256(), text: String(data: data!, encoding: .utf8)!, type: MessageType.prompt))
                     do {
-                        // Parsing the JSON response
-                        if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                        if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any],
                            let choices = jsonResponse["choices"] as? [[String: Any]],
                            let firstChoice = choices.first,
                            let messageContent = firstChoice["message"] as? [String: Any],
                            let content = messageContent["content"] as? String {
-                            // Add this response as a message in the chat
-                            chatMessages.append(Message(id: sha256(), text: content, type: MessageType.response))
+                            completion.messages.append(Message(id: sha256(), text: content, type: MessageType.response))
                         }
                     } catch {
-                        // If the JSON parsing fails, display a JSON parsing error message
-                        chatMessages.append(Message(id: sha256(), text: "JSON parsing error: \(error.localizedDescription)", type: MessageType.response))
+                        completion.messages.append(Message(id: sha256(), text: "JSON parsing error: \(error.localizedDescription)", type: MessageType.response))
                     }
-                } else if let error = error {
-                    chatMessages.append(Message(id: sha256(), text: "Error: \(error.localizedDescription)", type: MessageType.response))
                 }
-                var completion = Completion(id: sha256(), messages: chatMessages)
-                self.completions.append(completion)
+                if (response != nil) {
+//                    completion.messages.append(Message(id: sha256(), text: "respond", type: MessageType.response))
+                }
+                if (error != nil) {
+                    completion.messages.append(Message(id: sha256(), text: "Error: \(error!.localizedDescription)", type: MessageType.response))
+                }
+                print(completion)
+                completions.append(completion)
             }
-            
-        }.resume()
+        }
+            task.resume()
         
-        senderMessage = ""
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            switch task.state {
+            case .running:
+                print("Task is still running...")
+            case .completed:
+                print("Task completed")
+                self.isTaskRunning.toggle()
+                timer.invalidate()
+            case .canceling:
+                print("Task is canceling")
+                self.isTaskRunning.toggle()
+                timer.invalidate()
+            case .suspended:
+                print("Task is suspended")
+                self.isTaskRunning.toggle()
+                timer.invalidate()
+            @unknown default:
+                print("Unknown state")
+                self.isTaskRunning.toggle()
+                timer.invalidate()
+            }
+        }
     }
 }
 

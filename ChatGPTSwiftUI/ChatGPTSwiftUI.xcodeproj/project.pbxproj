@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B9580A072B1B0E260018CA93 /* P271_Collapsible†ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9580A062B1B0E260018CA93 /* P271_Collapsible†ext.swift */; };
+		B9580A092B1B13B40018CA93 /* P57_TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9580A082B1B13B40018CA93 /* P57_TextField.swift */; };
 		B9BE0B822B162CCF003CA28C /* ChatGPTSwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9BE0B812B162CCF003CA28C /* ChatGPTSwiftUIApp.swift */; };
 		B9BE0B842B162CCF003CA28C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9BE0B832B162CCF003CA28C /* ContentView.swift */; };
 		B9BE0B862B162CD0003CA28C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9BE0B852B162CD0003CA28C /* Assets.xcassets */; };
@@ -14,6 +16,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B9580A062B1B0E260018CA93 /* P271_Collapsible†ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "P271_Collapsible†ext.swift"; sourceTree = "<group>"; };
+		B9580A082B1B13B40018CA93 /* P57_TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P57_TextField.swift; sourceTree = "<group>"; };
 		B9BE0B7E2B162CCF003CA28C /* ChatGPTSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatGPTSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9BE0B812B162CCF003CA28C /* ChatGPTSwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatGPTSwiftUIApp.swift; sourceTree = "<group>"; };
 		B9BE0B832B162CCF003CA28C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; wrapsLines = 0; };
@@ -53,6 +57,8 @@
 			children = (
 				B9BE0B812B162CCF003CA28C /* ChatGPTSwiftUIApp.swift */,
 				B9BE0B832B162CCF003CA28C /* ContentView.swift */,
+				B9580A082B1B13B40018CA93 /* P57_TextField.swift */,
+				B9580A062B1B0E260018CA93 /* P271_Collapsible†ext.swift */,
 				B9BE0B852B162CD0003CA28C /* Assets.xcassets */,
 				B9BE0B872B162CD0003CA28C /* Preview Content */,
 			);
@@ -138,6 +144,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B9BE0B842B162CCF003CA28C /* ContentView.swift in Sources */,
+				B9580A072B1B0E260018CA93 /* P271_Collapsible†ext.swift in Sources */,
+				B9580A092B1B13B40018CA93 /* P57_TextField.swift in Sources */,
 				B9BE0B822B162CCF003CA28C /* ChatGPTSwiftUIApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

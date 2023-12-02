@@ -40,7 +40,7 @@ struct ViewHeightKey: PreferenceKey {
 //struct ContentView: View {
 //    @State private var text: String = ""
 //    @FocusState private var isTextEditorFocused: Bool
-//    
+//
 //    var body: some View {
 //        TextEditor(text: $text)
 //            .focused($isTextEditorFocused)
@@ -84,56 +84,60 @@ struct ContentView: View {
                 }
                 
                 HStack {
-                                        ZStack(alignment: .leading) {
-                                            Text(senderMessage)
-                                                .lineLimit(3)
-                                                .font(.callout)
-                                                .padding(8)
-                                                .background(GeometryReader {
-                                                    Color.clear.preference(key: ViewHeightKey.self,
-                                                                           value: $0.frame(in: .local).size.height)
-                                                })
-                                                .hidden()
-                                            TextEditor(text: $senderMessage)
-                                                .font(.callout)
-                                                .frame(height: max(38,height))
-                                                .padding(.horizontal, 3)
-                                                .border(Color.primary, width: 1.0)
-                                                .lineLimit(3)
-                                        }
-                                        .background(Color.secondary.opacity(0.3))
-                                        .cornerRadius(8)
-                                        .onPreferenceChange(ViewHeightKey.self) { height = $0 }
-                                                            .padding()
-                    
-                    //                        HStack {
-//                    TextEditor(text: $senderMessage)
-//                        .autocorrectionDisabled(true)
-//                        .multilineTextAlignment(.leading)
-//                        .border(Color.secondary, width: 0.08125)
-//                        .onKeyPress(.return, action: {
-//                            sendMessage(senderMessage)
-//                            return .handled
-//                        })
-//                        .focused($isTextEditorFocused)
-//                        .onAppear {
-//                            // This will set the focus on the TextEditor when the view appears
-//                            isTextEditorFocused = true
-//                        }
-                    Button(action: {
-                        sendMessage(senderMessage)
-                    }) {
-                        Image(systemName: self.isTaskRunning ? "play.fill" : "play")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .symbolRenderingMode(.monochrome)
-                            .fontWeight(.thin)
-                            .foregroundStyle(Color.secondary)
+                    GroupBox {
+                        ZStack(alignment: .leading) {
+                            Text(senderMessage)
+                                .lineLimit(3)
+                                .font(.callout)
+                                .padding(8)
+                                .background(GeometryReader {
+                                    Color.clear.preference(key: ViewHeightKey.self,
+                                                           value: $0.frame(in: .local).size.height)
+                                })
+                                .hidden()
+                            TextEditor(text: $senderMessage)
+                                .font(.callout)
+                                .frame(height: max(38,height))
+                                .padding(.horizontal, 3)
+                                .lineLimit(3)
+                                .autocorrectionDisabled(true)
+                                .multilineTextAlignment(.leading)
+                                .border(Color.white, width: 0.08125)
+                                .focused($isTextEditorFocused)
+                                .onAppear {
+                                    // This will set the focus on the TextEditor when the view appears
+                                    isTextEditorFocused = true
+                                }
+                                .onKeyPress(.return, action: {
+                                    sendMessage(senderMessage)
+                                    return .handled
+                                })
+                        }
+                        .background(Color.secondary.opacity(0.3))
+                        .onPreferenceChange(ViewHeightKey.self) { height = $0 }
+                        .padding()
+                        
+                        Button(action: {
+                            sendMessage(senderMessage)
+                        }) {
+                            Image(systemName: self.isTaskRunning ? "play.fill" : "play")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .symbolRenderingMode(.monochrome)
+                                .fontWeight(.thin)
+                                .foregroundStyle(Color.secondary)
+                        }
+                        .frame(height: geometry.size.height * 0.05, alignment: .center)
+                        
+                    } label: {
+                        Text("Message ChatGTP...")
+                            .font(.caption)
+                            .opacity(0.5)
                     }
-                    .frame(height: geometry.size.height * 0.05, alignment: .center)
                 }
                 .preferredColorScheme(.dark)
             }
+            
         })
     }
     
@@ -141,6 +145,7 @@ struct ContentView: View {
         let tidyMessage = message.trimmingCharacters(in: .whitespacesAndNewlines)
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         senderMessage = ""
+        
         let url = URL(string: "https://api.openai.com/v1/chat/completions")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -170,7 +175,7 @@ struct ContentView: View {
                 var completion: Completion = Completion(id: sha256(), date: Date().description, messages: [Message]())
                 completion.messages.append(Message(id: sha256(), text: tidyMessage, type: MessageType.prompt))
                 if (data != nil) {
-                    //                    completion.messages.append(Message(id: sha256(), text: String(data: data!, encoding: .utf8)!, type: MessageType.prompt))
+                    //                                        completion.messages.append(Message(id: sha256(), text: String(data: data!, encoding: .utf8)!, type: MessageType.prompt))
                     do {
                         if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any],
                            let choices = jsonResponse["choices"] as? [[String: Any]],
@@ -184,12 +189,12 @@ struct ContentView: View {
                     }
                 }
                 if (response != nil) {
-                    //                    completion.messages.append(Message(id: sha256(), text: "\(response)", type: MessageType.response))
+                    //                                        completion.messages.append(Message(id: sha256(), text: "\(response)", type: MessageType.response))
                 }
                 if (error != nil) {
-                    completion.messages.append(Message(id: sha256(), text: "Error: \(error!.localizedDescription)", type: MessageType.response))
+                    //                    completion.messages.append(Message(id: sha256(), text: "Error: \(error!.localizedDescription)", type: MessageType.response))
                 }
-                //                print(completion)
+                print(completion)
                 completions.append(completion)
             }
         }
@@ -224,11 +229,7 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+        P271_CollapsibleText()
+        P57_TextField()
     }
 }
-
-//struct P239_DynamicTextEditor_Previews: PreviewProvider {
-//    static var previews: some View {
-//        P239_DynamicTextEditor()
-//    }
-//}

@@ -7,71 +7,64 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B95764DF2B1B551A00A12815 /* P150_Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95764DE2B1B551A00A12815 /* P150_Section.swift */; };
-		B9580A072B1B0E260018CA93 /* P271_Collapsible†ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9580A062B1B0E260018CA93 /* P271_Collapsible†ext.swift */; };
-		B9580A092B1B13B40018CA93 /* P57_TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9580A082B1B13B40018CA93 /* P57_TextField.swift */; };
-		B9BE0B822B162CCF003CA28C /* ChatGPTSwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9BE0B812B162CCF003CA28C /* ChatGPTSwiftUIApp.swift */; };
-		B9BE0B842B162CCF003CA28C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9BE0B832B162CCF003CA28C /* ContentView.swift */; };
-		B9BE0B862B162CD0003CA28C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9BE0B852B162CD0003CA28C /* Assets.xcassets */; };
-		B9BE0B892B162CD0003CA28C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9BE0B882B162CD0003CA28C /* Preview Assets.xcassets */; };
+		B98C0B5F2B1BB4AC00520381 /* AtomicCounterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98C0B5E2B1BB4AC00520381 /* AtomicCounterApp.swift */; };
+		B98C0B612B1BB4AC00520381 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98C0B602B1BB4AC00520381 /* ContentView.swift */; };
+		B98C0B632B1BB4AD00520381 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B98C0B622B1BB4AD00520381 /* Assets.xcassets */; };
+		B98C0B662B1BB4AD00520381 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B98C0B652B1BB4AD00520381 /* Preview Assets.xcassets */; };
+		B98C0B6E2B1BB4DD00520381 /* Atomics in Frameworks */ = {isa = PBXBuildFile; productRef = B98C0B6D2B1BB4DD00520381 /* Atomics */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B95764DE2B1B551A00A12815 /* P150_Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P150_Section.swift; sourceTree = "<group>"; };
-		B9580A062B1B0E260018CA93 /* P271_Collapsible†ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "P271_Collapsible†ext.swift"; sourceTree = "<group>"; };
-		B9580A082B1B13B40018CA93 /* P57_TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P57_TextField.swift; sourceTree = "<group>"; };
-		B9BE0B7E2B162CCF003CA28C /* ChatGPTSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatGPTSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B9BE0B812B162CCF003CA28C /* ChatGPTSwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatGPTSwiftUIApp.swift; sourceTree = "<group>"; };
-		B9BE0B832B162CCF003CA28C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; wrapsLines = 0; };
-		B9BE0B852B162CD0003CA28C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B9BE0B882B162CD0003CA28C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B98C0B5B2B1BB4AC00520381 /* AtomicCounter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AtomicCounter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B98C0B5E2B1BB4AC00520381 /* AtomicCounterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicCounterApp.swift; sourceTree = "<group>"; };
+		B98C0B602B1BB4AC00520381 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B98C0B622B1BB4AD00520381 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B98C0B652B1BB4AD00520381 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		B9BE0B7B2B162CCF003CA28C /* Frameworks */ = {
+		B98C0B582B1BB4AC00520381 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B98C0B6E2B1BB4DD00520381 /* Atomics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B9BE0B752B162CCF003CA28C = {
+		B98C0B522B1BB4AC00520381 = {
 			isa = PBXGroup;
 			children = (
-				B9BE0B802B162CCF003CA28C /* ChatGPTSwiftUI */,
-				B9BE0B7F2B162CCF003CA28C /* Products */,
+				B98C0B5D2B1BB4AC00520381 /* AtomicCounter */,
+				B98C0B5C2B1BB4AC00520381 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		B9BE0B7F2B162CCF003CA28C /* Products */ = {
+		B98C0B5C2B1BB4AC00520381 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B9BE0B7E2B162CCF003CA28C /* ChatGPTSwiftUI.app */,
+				B98C0B5B2B1BB4AC00520381 /* AtomicCounter.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B9BE0B802B162CCF003CA28C /* ChatGPTSwiftUI */ = {
+		B98C0B5D2B1BB4AC00520381 /* AtomicCounter */ = {
 			isa = PBXGroup;
 			children = (
-				B9BE0B812B162CCF003CA28C /* ChatGPTSwiftUIApp.swift */,
-				B9BE0B832B162CCF003CA28C /* ContentView.swift */,
-				B95764DE2B1B551A00A12815 /* P150_Section.swift */,
-				B9580A082B1B13B40018CA93 /* P57_TextField.swift */,
-				B9580A062B1B0E260018CA93 /* P271_Collapsible†ext.swift */,
-				B9BE0B852B162CD0003CA28C /* Assets.xcassets */,
-				B9BE0B872B162CD0003CA28C /* Preview Content */,
+				B98C0B5E2B1BB4AC00520381 /* AtomicCounterApp.swift */,
+				B98C0B602B1BB4AC00520381 /* ContentView.swift */,
+				B98C0B622B1BB4AD00520381 /* Assets.xcassets */,
+				B98C0B642B1BB4AD00520381 /* Preview Content */,
 			);
-			path = ChatGPTSwiftUI;
+			path = AtomicCounter;
 			sourceTree = "<group>";
 		};
-		B9BE0B872B162CD0003CA28C /* Preview Content */ = {
+		B98C0B642B1BB4AD00520381 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				B9BE0B882B162CD0003CA28C /* Preview Assets.xcassets */,
+				B98C0B652B1BB4AD00520381 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -79,39 +72,42 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B9BE0B7D2B162CCF003CA28C /* ChatGPTSwiftUI */ = {
+		B98C0B5A2B1BB4AC00520381 /* AtomicCounter */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B9BE0B8C2B162CD0003CA28C /* Build configuration list for PBXNativeTarget "ChatGPTSwiftUI" */;
+			buildConfigurationList = B98C0B692B1BB4AD00520381 /* Build configuration list for PBXNativeTarget "AtomicCounter" */;
 			buildPhases = (
-				B9BE0B7A2B162CCF003CA28C /* Sources */,
-				B9BE0B7B2B162CCF003CA28C /* Frameworks */,
-				B9BE0B7C2B162CCF003CA28C /* Resources */,
+				B98C0B572B1BB4AC00520381 /* Sources */,
+				B98C0B582B1BB4AC00520381 /* Frameworks */,
+				B98C0B592B1BB4AC00520381 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = ChatGPTSwiftUI;
-			productName = ChatGPTSwiftUI;
-			productReference = B9BE0B7E2B162CCF003CA28C /* ChatGPTSwiftUI.app */;
+			name = AtomicCounter;
+			packageProductDependencies = (
+				B98C0B6D2B1BB4DD00520381 /* Atomics */,
+			);
+			productName = AtomicCounter;
+			productReference = B98C0B5B2B1BB4AC00520381 /* AtomicCounter.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		B9BE0B762B162CCF003CA28C /* Project object */ = {
+		B98C0B532B1BB4AC00520381 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1510;
 				LastUpgradeCheck = 1510;
 				TargetAttributes = {
-					B9BE0B7D2B162CCF003CA28C = {
+					B98C0B5A2B1BB4AC00520381 = {
 						CreatedOnToolsVersion = 15.1;
 					};
 				};
 			};
-			buildConfigurationList = B9BE0B792B162CCF003CA28C /* Build configuration list for PBXProject "ChatGPTSwiftUI" */;
+			buildConfigurationList = B98C0B562B1BB4AC00520381 /* Build configuration list for PBXProject "AtomicCounter" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -119,45 +115,45 @@
 				en,
 				Base,
 			);
-			mainGroup = B9BE0B752B162CCF003CA28C;
-			productRefGroup = B9BE0B7F2B162CCF003CA28C /* Products */;
+			mainGroup = B98C0B522B1BB4AC00520381;
+			packageReferences = (
+				B98C0B6C2B1BB4DD00520381 /* XCRemoteSwiftPackageReference "swift-atomics" */,
+			);
+			productRefGroup = B98C0B5C2B1BB4AC00520381 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B9BE0B7D2B162CCF003CA28C /* ChatGPTSwiftUI */,
+				B98C0B5A2B1BB4AC00520381 /* AtomicCounter */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		B9BE0B7C2B162CCF003CA28C /* Resources */ = {
+		B98C0B592B1BB4AC00520381 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9BE0B892B162CD0003CA28C /* Preview Assets.xcassets in Resources */,
-				B9BE0B862B162CD0003CA28C /* Assets.xcassets in Resources */,
+				B98C0B662B1BB4AD00520381 /* Preview Assets.xcassets in Resources */,
+				B98C0B632B1BB4AD00520381 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		B9BE0B7A2B162CCF003CA28C /* Sources */ = {
+		B98C0B572B1BB4AC00520381 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9BE0B842B162CCF003CA28C /* ContentView.swift in Sources */,
-				B9580A072B1B0E260018CA93 /* P271_Collapsible†ext.swift in Sources */,
-				B9580A092B1B13B40018CA93 /* P57_TextField.swift in Sources */,
-				B9BE0B822B162CCF003CA28C /* ChatGPTSwiftUIApp.swift in Sources */,
-				B95764DF2B1B551A00A12815 /* P150_Section.swift in Sources */,
+				B98C0B612B1BB4AC00520381 /* ContentView.swift in Sources */,
+				B98C0B5F2B1BB4AC00520381 /* AtomicCounterApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		B9BE0B8A2B162CD0003CA28C /* Debug */ = {
+		B98C0B672B1BB4AD00520381 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -220,7 +216,7 @@
 			};
 			name = Debug;
 		};
-		B9BE0B8B2B162CD0003CA28C /* Release */ = {
+		B98C0B682B1BB4AD00520381 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -276,14 +272,14 @@
 			};
 			name = Release;
 		};
-		B9BE0B8D2B162CD0003CA28C /* Debug */ = {
+		B98C0B6A2B1BB4AD00520381 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"ChatGPTSwiftUI/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"AtomicCounter/Preview Content\"";
 				DEVELOPMENT_TEAM = N9987K9442;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -297,7 +293,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.blogspot.demonicactivity.bush.alan.james.ChatGPTSwiftUI;
+				PRODUCT_BUNDLE_IDENTIFIER = com.blogspot.demonicactivity.bush.alan.james.AtomicCounter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -305,14 +301,14 @@
 			};
 			name = Debug;
 		};
-		B9BE0B8E2B162CD0003CA28C /* Release */ = {
+		B98C0B6B2B1BB4AD00520381 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"ChatGPTSwiftUI/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"AtomicCounter/Preview Content\"";
 				DEVELOPMENT_TEAM = N9987K9442;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -326,7 +322,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.blogspot.demonicactivity.bush.alan.james.ChatGPTSwiftUI;
+				PRODUCT_BUNDLE_IDENTIFIER = com.blogspot.demonicactivity.bush.alan.james.AtomicCounter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -337,25 +333,44 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B9BE0B792B162CCF003CA28C /* Build configuration list for PBXProject "ChatGPTSwiftUI" */ = {
+		B98C0B562B1BB4AC00520381 /* Build configuration list for PBXProject "AtomicCounter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B9BE0B8A2B162CD0003CA28C /* Debug */,
-				B9BE0B8B2B162CD0003CA28C /* Release */,
+				B98C0B672B1BB4AD00520381 /* Debug */,
+				B98C0B682B1BB4AD00520381 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B9BE0B8C2B162CD0003CA28C /* Build configuration list for PBXNativeTarget "ChatGPTSwiftUI" */ = {
+		B98C0B692B1BB4AD00520381 /* Build configuration list for PBXNativeTarget "AtomicCounter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B9BE0B8D2B162CD0003CA28C /* Debug */,
-				B9BE0B8E2B162CD0003CA28C /* Release */,
+				B98C0B6A2B1BB4AD00520381 /* Debug */,
+				B98C0B6B2B1BB4AD00520381 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B98C0B6C2B1BB4DD00520381 /* XCRemoteSwiftPackageReference "swift-atomics" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-atomics.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B98C0B6D2B1BB4DD00520381 /* Atomics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B98C0B6C2B1BB4DD00520381 /* XCRemoteSwiftPackageReference "swift-atomics" */;
+			productName = Atomics;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = B9BE0B762B162CCF003CA28C /* Project object */;
+	rootObject = B98C0B532B1BB4AC00520381 /* Project object */;
 }

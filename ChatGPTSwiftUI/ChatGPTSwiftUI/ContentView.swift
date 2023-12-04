@@ -37,6 +37,38 @@ struct ViewHeightKey: PreferenceKey {
     }
 }
 
+struct SizeKey: PreferenceKey {
+    static var defaultValue: CGSize = .zero
+
+    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
+        value = nextValue()
+    }
+}
+
+struct MeasureSizeModifier: ViewModifier {
+    @Binding var size: CGSize
+
+    func body(content: Content) -> some View {
+        content
+            .background(
+                GeometryReader { geometry in
+                    Color.clear
+                        .preference(key: SizeKey.self, value: geometry.size)
+                }
+            )
+            .onPreferenceChange(SizeKey.self) { preferences in
+                self.size = preferences
+            }
+    }
+}
+
+extension View {
+    func measureSize(binding size: Binding<CGSize>) -> some View {
+        self.modifier(MeasureSizeModifier(size: size))
+    }
+}
+
+
 //struct ContentView: View {
 //    @State private var text: String = ""
 //    @FocusState private var isTextEditorFocused: Bool
@@ -59,6 +91,8 @@ struct ContentView: View {
     @FocusState private var isTextEditorFocused: Bool
     @State var height: CGFloat = 20
     @State private var completions: [Completion] = [Completion]()
+    @State private var textSize: CGSize = .zero
+
     
     
     var body: some View {
@@ -69,66 +103,92 @@ struct ContentView: View {
                         Section {
                             ForEach(completion.messages) { message in
                                 Section {
-                                    Text(message.text)
-                                        .foregroundColor(Color.primary)
-                                } header: {
-                                    Text((message.type == MessageType.prompt) ? "Prompt" : "Response")
-                                        .listRowSeparator(.hidden)
-                                        .foregroundColor(Color.secondary)
+                                    GroupBox {
+                                        HStack {
+                                            Text(message.text)
+                                                .foregroundColor(Color.primary)
+                                                .listRowSeparator(.visible)
+                                            Spacer()
+                                        }
+                                    } label: {
+                                        HStack {
+                                            Text((message.type == MessageType.prompt) ? "PROMPT" : "RESPONSE")
+                                                .font(.caption)
+                                                .opacity(0.5)
+                                                .listRowSeparator(.hidden)
+                                                
+//                                            Spacer()
+                                        }
+                                    }
+                                    
                                 }
+                                
+                                
                             }
                         } header: {
                             Text(completion.date)
+                                .font(.caption)
+                                .opacity(0.5)
+                                .frame(alignment: Alignment.trailing)
+                            Spacer()
                         }
+                        .scrollContentBackground(.visible)
                     }
                 }
+                .background(Color.primary.opacity(0.5))
+                .listStyle(SidebarListStyle())
+                .padding()
                 
                 HStack {
                     GroupBox {
-                        ZStack(alignment: .leading) {
-                            Text(senderMessage)
-                                .lineLimit(3)
-                                .font(.callout)
-                                .padding(8)
-                                .background(GeometryReader {
-                                    Color.clear.preference(key: ViewHeightKey.self,
-                                                           value: $0.frame(in: .local).size.height)
-                                })
-                                .hidden()
-                            TextEditor(text: $senderMessage)
-                                .font(.callout)
-                                .frame(height: max(38,height))
-                                .padding(.horizontal, 3)
-                                .lineLimit(3)
-                                .autocorrectionDisabled(true)
-                                .multilineTextAlignment(.leading)
-                                .border(Color.white, width: 0.08125)
-                                .focused($isTextEditorFocused)
-                                .onAppear {
-                                    // This will set the focus on the TextEditor when the view appears
-                                    isTextEditorFocused = true
-                                }
-                                .onKeyPress(.return, action: {
+                        HStack {
+                            ZStack(alignment: .leading) {
+                                Text(senderMessage)
+                                    .lineLimit(3, reservesSpace: false)
+                                    .background(GeometryReader {
+                                        Color.clear.preference(key: ViewHeightKey.self,
+                                                               value: $0.frame(in: .local).size.height)
+                                    })
+                                    .hidden()
+                                    .font(.body)
+                                    .measureSize(binding: $textSize)
+
+
+                                TextEditor(text: $senderMessage)
+                                    .font(.body)
+                                    .cornerRadius(10.0)
+                                    .frame(height: textSize.height * 1.5)
+                                    .padding(.horizontal, 3)
+                                    .lineLimit(3, reservesSpace: false)
+                                    .autocorrectionDisabled(true)
+                                    .multilineTextAlignment(.leading)
+                                    .focused($isTextEditorFocused)
+                                    .onAppear {
+                                        isTextEditorFocused = true
+                                    }
+//                                    .onKeyPress(.return, action: {
+//                                        if senderMessage != nil {
+//                                            sendMessage(senderMessage)
+//                                        }
+//                                        return .handled
+//                                    })
+                            }
+                            .onPreferenceChange(ViewHeightKey.self) { height = $0 }
+                            
+                            Button(action: {
+                                if senderMessage != nil {
                                     sendMessage(senderMessage)
-                                    return .handled
-                                })
+                                }
+                            }) {
+                                Image(systemName: self.isTaskRunning ? "play.fill" : "play")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .symbolRenderingMode(.monochrome)
+                                    .fontWeight(.thin)
+                                    .foregroundStyle(Color.secondary)
+                            }
+                            .frame(height: geometry.size.height * 0.05, alignment: .center)
                         }
-                        .background(Color.secondary.opacity(0.3))
-                        .onPreferenceChange(ViewHeightKey.self) { height = $0 }
-                        .padding()
-                        
-                        Button(action: {
-                            sendMessage(senderMessage)
-                        }) {
-                            Image(systemName: self.isTaskRunning ? "play.fill" : "play")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .symbolRenderingMode(.monochrome)
-                                .fontWeight(.thin)
-                                .foregroundStyle(Color.secondary)
-                        }
-                        .frame(height: geometry.size.height * 0.05, alignment: .center)
-                        
                     } label: {
                         Text("Message ChatGTP...")
                             .font(.caption)
@@ -137,10 +197,11 @@ struct ContentView: View {
                 }
                 .preferredColorScheme(.dark)
             }
-            
         })
     }
     
+    /// Processes the user prompt and submit
+    /// - Parameter message: <#message description#>
     private func sendMessage(_ message: String) {
         let tidyMessage = message.trimmingCharacters(in: .whitespacesAndNewlines)
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
@@ -151,7 +212,7 @@ struct ContentView: View {
         request.httpMethod = "POST"
         
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("Bearer ", forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer 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", forHTTPHeaderField: "Authorization")
         request.addValue("org-jGOqXYFRJHKlnkff8K836fK2", forHTTPHeaderField: "OpenAI-Organization")
         
         let payload: [String: Any] = [
@@ -182,7 +243,8 @@ struct ContentView: View {
                            let firstChoice = choices.first,
                            let messageContent = firstChoice["message"] as? [String: Any],
                            let content = messageContent["content"] as? String {
-                            completion.messages.append(Message(id: sha256(), text: content, type: MessageType.response))
+                            let tidyContent = content.trimmingCharacters(in: .whitespacesAndNewlines)
+                            completion.messages.append(Message(id: sha256(), text: tidyContent, type: MessageType.response))
                         }
                     } catch {
                         completion.messages.append(Message(id: sha256(), text: "JSON parsing error: \(error.localizedDescription)", type: MessageType.response))
@@ -194,7 +256,6 @@ struct ContentView: View {
                 if (error != nil) {
                     //                    completion.messages.append(Message(id: sha256(), text: "Error: \(error!.localizedDescription)", type: MessageType.response))
                 }
-                print(completion)
                 completions.append(completion)
             }
         }
@@ -231,5 +292,6 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
         P271_CollapsibleText()
         P57_TextField()
+        P150_Section()
     }
 }
